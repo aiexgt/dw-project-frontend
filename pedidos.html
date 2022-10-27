@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pedidos</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarTogglerDemo03"
+        aria-controls="navbarTogglerDemo03"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="#">GT</a>
+
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="dashboard.html"
+              >Inicio <span class="sr-only">(current)</span></a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="pedidos.html">Pedidos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="articulos.html">Artículos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="usuarios.html">Usuarios</a>
+          </li>
+        </ul>
+        <div class="form-inline my-2 my-lg-0">
+          <a href="index.html">
+            <button class="btn btn-danger my-2 my-sm-0">Cerrar Sesión</button>
+          </a>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <br />
+      <h2>Pedidos</h2>
+      <br />
+      <div class="row">
+        <div class="col-6">
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Buscar"
+              id="inputBuscar"
+            />
+            <button class="btn btn-dark" type="button" id="btnBuscar">
+              Buscar
+            </button>
+          </div>
+        </div>
+        <div class="col-3"></div>
+        <div class="col">
+          <button
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+          >
+            Agregar Pedido
+          </button>
+        </div>
+      </div>
+      <br /><br />
+      <div class="row" id="tbContenido"></div>
+    </div>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">
+              Añadir Pedido
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-9">
+                <label for="">Cliente</label>
+                <select class="form-select" id="slCliente">
+                  <option value="0" selected>Selecciona un Cliente</option>
+                </select>
+              </div>
+              <div class="col-3">
+                <label for=""></label>
+                <br />
+                <button
+                  class="btn btn-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#addCliente"
+                >
+                  Añadir Cliente
+                </button>
+              </div>
+            </div>
+            <br />
+            <div class="row">
+              <div class="mb-3">
+                <label class="form-label">Dirección Entrega</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="inputDireccionEntrega"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <label for="">Tipo Pago</label>
+                <select class="form-select" id="slTipoPago">
+                  <option value="0" selected>Selecciona un Tipo Pago</option>
+                  <option value="1">Efectivo</option>
+                  <option value="2">Cheque</option>
+                  <option value="3">Transferencia</option>
+                </select>
+              </div>
+            </div>
+            <br />
+            <div class="row">
+              <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label"
+                  >Observaciones</label
+                >
+                <textarea
+                  class="form-control"
+                  id="taObservacion"
+                  rows="3"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-primary">
+              Generar Pedido
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="addCliente"
+      tabindex="-1"
+      aria-labelledby="addClienteLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="addClienteLabel">
+              Añadir Cliente
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="mb-3">
+                <label class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="inputNombre" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Primer Apellido</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="inputPrimerApellido"
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Segundo Apellido</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="inputSegundoApellido"
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">NIT</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="inputNit"
+                  placeholder="XXXXXXX-X"
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Numero Principal</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="inputNumeroPrincipal"
+                  placeholder="XXXX-XXXX"
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Correo</label>
+                <input type="text" class="form-control" id="inputCorreo" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Dirección</label>
+                <input type="text" class="form-control" id="inputDireccion" />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="btnGuardarCliente"
+            >
+              Guardar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="editarPedidoModal"
+      tabindex="-1"
+      aria-labelledby="editarPedidoModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="editarPedidoModalLabel">
+              Editar pedido
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-12">
+                <label for="">Estado Pedido</label>
+                <select class="form-select" id="slEstadoPedido">
+                  <option value="0" selected>Selecciona un estado</option>
+                  <option value="1">Revisión</option>
+                  <option value="2">Confirmado</option>
+                  <option value="3">En Preparación</option>
+                  <option value="4">Preparado</option>
+                  <option value="5">Entregado</option>
+                  <option value="6">Anulado</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-primary" id="btnEditar">Guardar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+      crossorigin="anonymous"
+    ></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="src/pedidos.js"></script>
+  </body>
+</html>
