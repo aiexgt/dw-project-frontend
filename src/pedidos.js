@@ -43,6 +43,14 @@ const mostrar = (token, word) => {
           template += `
                 <tr class="table-warning">
                 `;
+        } else if (info.data[i].estadoPedidoId == 6) {
+          template += `
+                <tr class="table-danger">
+                `;
+        } else {
+          template += `
+            <tr>
+            `;
         }
         template += `
                     <td>${parseInt(i) + 1}</td>
@@ -158,23 +166,136 @@ const addCliente = () => {
     .catch((error) => console.log("error", error));
 };
 
-const editar = (id,estado) => {
+const editar = (id, estado) => {
   pedidoId = id;
   $("#editarPedidoModal").modal("show");
   $("#slEstadoPedido").val(estado);
 };
 
 const addPedido = () => {
-    
-}
+  const cliente = $("#slCliente").val();
+  const direccion = $("#inputDireccionEntrega").val();
+  const tipoPago = $("#slTipoPago").val();
+  const observacion = $("#taObservacion").val();
+
+  if (cliente != 0 && direccion != "" && tipoPago != 0) {
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer " + token);
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+    var urlencoded = new URLSearchParams();
+    urlencoded.append("clienteId", cliente);
+    urlencoded.append("direccion", direccion);
+    urlencoded.append("tipoPagoId", tipoPago);
+    urlencoded.append("observacion", observacion);
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: urlencoded,
+      redirect: "follow",
+    };
+
+    fetch("http://localhost:5500/pedido", requestOptions)
+      .then((response) => response.text())
+      .then((result) => {
+        const info = JSON.parse(result);
+        if (info.error) {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Ha ocurrido un problema!",
+          });
+        } else {
+          $("#exampleModal").modal("hide");
+          Swal.fire("Bien Hecho!", "Se ha añadido el pedido!", "success");
+          mostrar(token);
+        }
+      })
+      .catch((error) => console.log("error", error));
+  } else {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Ha ocurrido un problema, revisa los datos!",
+    });
+  }
+};
 
 const cambiarEstado = () => {
+  const estado = $("#slEstadoPedido").val();
+  var myHeaders = new Headers();
+  myHeaders.append("Authorization", "Bearer " + token);
+  myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
-}
+  var urlencoded = new URLSearchParams();
+  urlencoded.append("estado", estado);
+
+  var requestOptions = {
+    method: "PUT",
+    headers: myHeaders,
+    body: urlencoded,
+    redirect: "follow",
+  };
+
+  fetch("http://localhost:5500/pedido/" + pedidoId, requestOptions)
+    .then((response) => response.text())
+    .then((result) => {
+      const info = JSON.parse(result);
+      if (info.error) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Ha ocurrido un problema!",
+        });
+      } else {
+        $("#editarPedidoModal").modal("hide");
+        Swal.fire("Bien Hecho!", "Se ha eliminado el pedido!", "success");
+        mostrar(token);
+      }
+    })
+    .catch((error) => console.log("error", error));
+};
 
 const eliminar = (id) => {
+  Swal.fire({
+    title: "Estas seguro?",
+    text: "Este cambio es irreversible!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      var myHeaders = new Headers();
+      myHeaders.append("Authorization", "Bearer " + token);
 
-}
+      var requestOptions = {
+        method: "DELETE",
+        headers: myHeaders,
+        redirect: "follow",
+      };
+
+      fetch("http://localhost:5500/pedido/" + id, requestOptions)
+        .then((response) => response.text())
+        .then((result) => {
+          const info = JSON.parse(result);
+          if (info.error) {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Ha ocurrido un problema!",
+            });
+          } else {
+            Swal.fire("Bien Hecho!", "Se ha eliminado el pedido!", "success");
+            mostrar(token);
+          }
+        })
+        .catch((error) => console.log("error", error));
+    }
+  });
+};
 
 const token = localStorage.getItem("tokenDWproject") || "undefined";
 if (token == "undefined") {
@@ -194,6 +315,14 @@ $("#inputBuscar").keypress(function (event) {
 $("#btnGuardarCliente").click(() => {
   addCliente();
 });
+
+$("#btnEditar").click(() => {
+  cambiarEstado();
+});
+
+$("#btnGenerarPedido").click(() => {
+    addPedido();
+})
 
 $(document).ready(() => {
   mostrar(token);
