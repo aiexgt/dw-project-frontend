@@ -1,6 +1,7 @@
 "use strict";
 
 var pedidoId;
+var pedidoDetalle;
 
 const mostrar = (token, word) => {
   if (word != "" && word != null && word != undefined) {
@@ -167,9 +168,40 @@ const addCliente = () => {
 };
 
 const editar = (id, estado) => {
-  pedidoId = id;
-  $("#editarPedidoModal").modal("show");
-  $("#slEstadoPedido").val(estado);
+  // pedidoId = id;
+  // $("#editarPedidoModal").modal("show");
+  // $("#slEstadoPedido").val(estado);
+  $("#addDetalleModal").modal("show")
+  var myHeaders = new Headers();
+  myHeaders.append("Authorization", "Bearer " + token);
+
+  var requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+  };
+
+  fetch("http://localhost:5500/pedido/" + id, requestOptions)
+    .then((response) => response.text())
+    .then((result) => {
+      const info = JSON.parse(result);
+      const template = `
+        <p><strong>Cliente: </strong>${info.data[0].clienteNombre}</p>
+        <p><strong>Fecha: </strong>${new Date(
+          info.data[0].fecha
+        ).toLocaleString()}</p>
+        <p><strong>Dirección Entrega: </strong>${
+          info.data[0].direccionEntrega
+        }</p>
+        <p><strong>Tipo Pago: </strong>${info.data[0].tipoPagoNombre}</p>
+        <p><strong>Estado: </strong>${info.data[0].estadoPedidoNombre}</p>
+        <p><strong>Observación: </strong>${info.data[0].observacion}</p>
+      `;
+      $("#contentPedido").html(template);
+      pedidoDetalle = id
+      mostrarDetalle(id);
+    })
+    .catch((error) => console.log("error", error));
 };
 
 const addPedido = () => {
@@ -209,6 +241,9 @@ const addPedido = () => {
         } else {
           $("#exampleModal").modal("hide");
           Swal.fire("Bien Hecho!", "Se ha añadido el pedido!", "success");
+          pedidoDetalle = info.id;
+          $("#addDetalleModal").modal("show");
+          consultarPedido();
           mostrar(token);
         }
       })
@@ -238,7 +273,7 @@ const cambiarEstado = () => {
     redirect: "follow",
   };
 
-  fetch("http://localhost:5500/pedido/" + pedidoId, requestOptions)
+  fetch("http://localhost:5500/pedido/" + pedidoDetalle, requestOptions)
     .then((response) => response.text())
     .then((result) => {
       const info = JSON.parse(result);
@@ -250,7 +285,7 @@ const cambiarEstado = () => {
         });
       } else {
         $("#editarPedidoModal").modal("hide");
-        Swal.fire("Bien Hecho!", "Se ha eliminado el pedido!", "success");
+        Swal.fire("Bien Hecho!", "Se ha cambiado de estado el pedido!", "success");
         mostrar(token);
       }
     })
@@ -265,7 +300,7 @@ const eliminar = (id) => {
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, delete it!",
+    confirmButtonText: "Si, eliminar!",
   }).then((result) => {
     if (result.isConfirmed) {
       var myHeaders = new Headers();
@@ -280,8 +315,7 @@ const eliminar = (id) => {
       fetch("http://localhost:5500/pedido/" + id, requestOptions)
         .then((response) => response.text())
         .then((result) => {
-          const info = JSON.parse(result);
-          if (info.error) {
+          if (result != "") {
             Swal.fire({
               icon: "error",
               title: "Oops...",
@@ -295,6 +329,252 @@ const eliminar = (id) => {
         .catch((error) => console.log("error", error));
     }
   });
+};
+
+const eliminarDetalle = (id) => {
+  Swal.fire({
+    title: "Estas seguro?",
+    text: "Este cambio es irreversible!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Si, eliminar!",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      var myHeaders = new Headers();
+      myHeaders.append("Authorization", "Bearer " + token);
+
+      var requestOptions = {
+        method: "DELETE",
+        headers: myHeaders,
+        redirect: "follow",
+      };
+
+      fetch("http://localhost:5500/detallePedido/" + id, requestOptions)
+        .then((response) => response.text())
+        .then((result) => {
+          if (result != "") {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Ha ocurrido un problema!",
+            });
+          } else {
+            Swal.fire("Bien Hecho!", "Se ha eliminado el artículo!", "success");
+            mostrarDetalle();
+          }
+        })
+        .catch((error) => console.log("error", error));
+    }
+  });
+};
+
+const mostrarDetalle = (id) => {
+  var myHeaders = new Headers();
+  myHeaders.append("Authorization", "Bearer " + token);
+
+  var requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+  };
+
+  fetch("http://localhost:5500/detallePedido/" + id, requestOptions)
+    .then((response) => response.text())
+    .then((result) => {
+      const info = JSON.parse(result);
+      let template = `
+      <table class="table table-striped">
+      <thead class="table-dark">
+          <tr>
+              <th>No.</th>
+              <th>Artículo</th>
+              <th>Cantidad</th>
+              <th>Precio Unitario</th>
+              <th>Total</th>
+              <th></th>
+          </tr>
+      </thead>
+      <tbody>
+      `;
+      let total = 0;
+      for (let i in info.data) {
+        let totalArticulo = parseInt(info.data[i].precio)*parseInt(info.data[i].cantidad);
+        total += totalArticulo;
+        template += `
+          <tr>
+            <td>${parseInt(i) + 1}</td>
+            <td>${info.data[i].articuloNombre}</td>
+            <td>${info.data[i].cantidad}</td>
+            <td>${(numeral (info.data[i].precio)).format('Q0,0.00')}</td>
+            <td>${(numeral (totalArticulo)).format('Q0,0.00')}</td>
+            <td>
+              <button class="btn btn-danger" onclick="eliminarDetalle(${
+                info.data[i].id
+              })">Eliminar</button>
+            </td>
+          </tr>
+        `;
+      }
+      template += `
+            <tr>
+              <th colspan="4"></th>
+              <th colspan="2">${(numeral (total)).format('Q0,0.00')}</th>
+            </tr>
+          </tbody>
+        </table>
+        `;
+      $("#contentDetalle").html(template);
+    })
+    .catch((error) => console.log("error", error));
+};
+
+const consultarPedido = () => {
+  var myHeaders = new Headers();
+  myHeaders.append("Authorization", "Bearer " + token);
+
+  var requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+  };
+
+  fetch("http://localhost:5500/pedido/" + pedidoDetalle, requestOptions)
+    .then((response) => response.text())
+    .then((result) => {
+      const info = JSON.parse(result);
+      const template = `
+        <p><strong>Cliente: </strong>${info.data[0].clienteNombre}</p>
+        <p><strong>Fecha: </strong>${new Date(
+          info.data[0].fecha
+        ).toLocaleString()}</p>
+        <p><strong>Dirección Entrega: </strong>${
+          info.data[0].direccionEntrega
+        }</p>
+        <p><strong>Tipo Pago: </strong>${info.data[0].tipoPagoNombre}</p>
+        <p><strong>Estado: </strong>${info.data[0].estadoPedidoNombre}</p>
+        <p><strong>Observación: </strong>${info.data[0].observacion}</p>
+      `;
+      $("#contentPedido").html(template);
+      mostrarDetalle(pedidoDetalle);
+    })
+    .catch((error) => console.log("error", error));
+};
+
+const selectCategoria = (token) => {
+  var myHeaders = new Headers();
+  myHeaders.append("Authorization", "Bearer " + token);
+
+  var requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+  };
+
+  fetch("http://localhost:5500/articulo/categoria", requestOptions)
+    .then((response) => response.text())
+    .then((result) => {
+      const info = JSON.parse(result);
+      let template = '<option value="0">Seleccione una categoría</option>';
+      for (let i in info.data) {
+        template += `
+                <option value="${info.data[i].id}">${info.data[i].nombre}</option>
+            `;
+      }
+      $("#slCategoria").html(template);
+    })
+    .catch((error) => console.log("error", error));
+};
+
+const selectArticulo = (categoria) => {
+  var myHeaders = new Headers();
+  myHeaders.append("Authorization", "Bearer " + token);
+
+  var requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+  };
+
+  fetch("http://localhost:5500/articulo?categoria=" + categoria, requestOptions)
+    .then((response) => response.text())
+    .then((result) => {
+      const info = JSON.parse(result);
+      let template = '<option value="0">Seleccione una categoría</option>';
+      for (let i in info.data) {
+        template += `
+                <option value="${info.data[i].id}">${info.data[i].codigo} - ${info.data[i].nombre}</option>
+            `;
+      }
+      $("#slArticulo").html(template).removeAttr("disabled");
+    })
+    .catch((error) => console.log("error", error));
+};
+
+const selectCantidadArticulo = (articulo) => {
+  var myHeaders = new Headers();
+  myHeaders.append("Authorization", "Bearer " + token);
+
+  var requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+  };
+
+  fetch("http://localhost:5500/articulo/" + articulo, requestOptions)
+    .then((response) => response.text())
+    .then((result) => {
+      const info = JSON.parse(result);
+      let template = "";
+      for (let i = 1; i <= info.data[0].stock; i++) {
+        template += `
+                <option value="${i}">${i}</option>
+            `;
+      }
+      $("#slCantidad").html(template).removeAttr("disabled");
+    })
+    .catch((error) => console.log("error", error));
+};
+
+const añadirDetalle = (id) => {
+  const articulo = $("#slArticulo").val();
+  const cantidad = $("#slCantidad").val();
+
+  if (articulo != 0 && cantidad != 0) {
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer " + token);
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+    var urlencoded = new URLSearchParams();
+    urlencoded.append("pedidoId", id);
+    urlencoded.append("articuloId", articulo);
+    urlencoded.append("cantidad", cantidad);
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: urlencoded,
+      redirect: "follow",
+    };
+
+    fetch("http://localhost:5500/detallePedido", requestOptions)
+      .then((response) => response.text())
+      .then((result) => {
+        const info = JSON.parse(result);
+        if (result.error) {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Ha ocurrido un error, verifique sus datos!",
+          });
+        } else {
+          Swal.fire("Bien Hecho!", "Artículo añadido!", "success");
+          mostrarDetalle(pedidoDetalle);
+        }
+      })
+      .catch((error) => console.log("error", error));
+  }
 };
 
 const token = localStorage.getItem("tokenDWproject") || "undefined";
@@ -316,15 +596,38 @@ $("#btnGuardarCliente").click(() => {
   addCliente();
 });
 
-$("#btnEditar").click(() => {
+$("#slEstadoPedido").change(() => {
   cambiarEstado();
 });
 
 $("#btnGenerarPedido").click(() => {
-    addPedido();
+  addPedido();
+});
+
+$("#slCategoria").change(() => {
+  const categoria = $("#slCategoria").val();
+  if (categoria != 0 && categoria != null) {
+    selectArticulo(categoria);
+  } else {
+    $("#slArticulo").val(0).attr("disabled", "disabled");
+  }
+});
+
+$("#slArticulo").change(() => {
+  const articulo = $("#slArticulo").val();
+  if (articulo != 0 && articulo != null) {
+    selectCantidadArticulo(articulo);
+  } else {
+    $("#slCantidad").val(1).attr("disabled", "disabled");
+  }
+});
+
+$("#btnAddDetalle").click(()=> {
+  añadirDetalle(pedidoDetalle);
 })
 
 $(document).ready(() => {
   mostrar(token);
   selectCliente(token);
+  selectCategoria(token);
 });

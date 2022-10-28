@@ -274,28 +274,54 @@
     <!-- Modal -->
     <div
       class="modal fade"
-      id="editarPedidoModal"
+      id="addDetalleModal"
       tabindex="-1"
-      aria-labelledby="editarPedidoModalLabel"
+      role="dialog"
+      aria-labelledby="addDetalleModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="editarPedidoModalLabel">
-              Editar pedido
-            </h1>
+            <h5 class="modal-title" id="addDetalleModalLabel">
+              Detalle Pedido
+            </h5>
             <button
               type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
+              class="close"
+              data-dismiss="modal"
               aria-label="Close"
-            ></button>
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
           </div>
           <div class="modal-body">
             <div class="row">
-              <div class="col-12">
-                <label for="">Estado Pedido</label>
+              <div class="col" id="contentPedido"></div>
+              <div class="col">
+                <label for="">Categoria</label>
+                <select class="form-select" id="slCategoria">
+                  <option value="0" selected>Selecciona una Categoria</option>
+                </select>
+                <br>
+                <label for="">Artículo</label>
+                <select class="form-select" id="slArticulo" disabled>
+                  <option value="0" selected>Selecciona un artículo</option>
+                </select>
+                <br>
+                <label for="">Cantidad</label>
+                <select class="form-select" id="slCantidad" disabled>
+                  <option value="1" selected>1</option>
+                </select>
+                <br>
+                <button class="btn btn-primary" id="btnAddDetalle">Añadir</button>
+              </div>
+            </div>
+            <hr />
+            <div class="row" id="contentDetalle"></div>
+          </div>
+          <div class="modal-footer">
+            <label for="">Estado Pedido</label>
                 <select class="form-select" id="slEstadoPedido">
                   <option value="1">Revisión</option>
                   <option value="2">Confirmado</option>
@@ -304,22 +330,11 @@
                   <option value="5">Entregado</option>
                   <option value="6">Anulado</option>
                 </select>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cancelar
-            </button>
-            <button type="button" class="btn btn-primary" id="btnEditar">Guardar</button>
           </div>
         </div>
       </div>
     </div>
+
     <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
       integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -340,6 +355,7 @@
       integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
       crossorigin="anonymous"
     ></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="src/pedidos.js"></script>
   </body>
