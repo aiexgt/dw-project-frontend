@@ -3,9 +3,9 @@ var articuloId;
 
 const mostrar = (token, word) => {
   if (word != "" && word != null && word != undefined) {
-    word = "http://localhost:5500/articulo?word=" + word;
+    word = "http://34.125.111.145:5500/articulo?word=" + word;
   } else {
-    word = "http://localhost:5500/articulo";
+    word = "http://34.125.111.145:5500/articulo";
   }
   var myHeaders = new Headers();
   myHeaders.append("Authorization", "Bearer " + token);
@@ -109,7 +109,7 @@ const add = () => {
       redirect: 'follow'
     };
 
-    fetch("http://localhost:5500/articulo", requestOptions)
+    fetch("http://34.125.111.145:5500/articulo", requestOptions)
       .then((response) => response.text())
       .then((result) => {
         const info = JSON.parse(result);
@@ -156,7 +156,7 @@ const eliminar = (id) => {
         redirect: "follow",
       };
 
-      fetch("http://localhost:5500/articulo/" + id, requestOptions)
+      fetch("http://34.125.111.145:5500/articulo/" + id, requestOptions)
         .then((response) => response.text())
         .then((result) => {
           if (result != "") {
@@ -186,7 +186,7 @@ const editar = (id) => {
     redirect: "follow",
   };
 
-  fetch("http://localhost:5500/articulo/"+id, requestOptions)
+  fetch("http://34.125.111.145:5500/articulo/"+id, requestOptions)
     .then((response) => response.text())
     .then((result) => {
       const info = JSON.parse(result);
@@ -213,7 +213,7 @@ const selectCategoria = (token) => {
     redirect: "follow",
   };
 
-  fetch("http://localhost:5500/articulo/categoria", requestOptions)
+  fetch("http://34.125.111.145:5500/articulo/categoria", requestOptions)
     .then((response) => response.text())
     .then((result) => {
       const info = JSON.parse(result);
@@ -266,7 +266,7 @@ const editarUsuario = () => {
         redirect: 'follow'
       };
 
-    fetch("http://localhost:5500/articulo/"+articuloId, requestOptions)
+    fetch("http://34.125.111.145:5500/articulo/"+articuloId, requestOptions)
       .then((response) => response.text())
       .then((result) => {
         const info = JSON.parse(result);

@@ -5,9 +5,9 @@ var pedidoDetalle;
 
 const mostrar = (token, word) => {
   if (word != "" && word != null && word != undefined) {
-    word = "http://localhost:5500/pedido?word=" + word;
+    word = "http://34.125.111.145:5500/pedido?word=" + word;
   } else {
-    word = "http://localhost:5500/pedido";
+    word = "http://34.125.111.145:5500/pedido";
   }
   var myHeaders = new Headers();
   myHeaders.append("Authorization", "Bearer " + token);
@@ -103,7 +103,7 @@ const selectCliente = () => {
     redirect: "follow",
   };
 
-  fetch("http://localhost:5500/cliente", requestOptions)
+  fetch("http://34.125.111.145:5500/cliente", requestOptions)
     .then((response) => response.text())
     .then((result) => {
       const info = JSON.parse(result);
@@ -146,7 +146,7 @@ const addCliente = () => {
     redirect: "follow",
   };
 
-  fetch("http://localhost:5500/cliente", requestOptions)
+  fetch("http://34.125.111.145:5500/cliente", requestOptions)
     .then((response) => response.text())
     .then(async (result) => {
       const info = JSON.parse(result);
@@ -181,7 +181,7 @@ const editar = (id, estado) => {
     redirect: "follow",
   };
 
-  fetch("http://localhost:5500/pedido/" + id, requestOptions)
+  fetch("http://34.125.111.145:5500/pedido/" + id, requestOptions)
     .then((response) => response.text())
     .then((result) => {
       const info = JSON.parse(result);
@@ -228,7 +228,7 @@ const addPedido = () => {
       redirect: "follow",
     };
 
-    fetch("http://localhost:5500/pedido", requestOptions)
+    fetch("http://34.125.111.145:5500/pedido", requestOptions)
       .then((response) => response.text())
       .then((result) => {
         const info = JSON.parse(result);
@@ -273,7 +273,7 @@ const cambiarEstado = () => {
     redirect: "follow",
   };
 
-  fetch("http://localhost:5500/pedido/" + pedidoDetalle, requestOptions)
+  fetch("http://34.125.111.145:5500/pedido/" + pedidoDetalle, requestOptions)
     .then((response) => response.text())
     .then((result) => {
       const info = JSON.parse(result);
@@ -312,7 +312,7 @@ const eliminar = (id) => {
         redirect: "follow",
       };
 
-      fetch("http://localhost:5500/pedido/" + id, requestOptions)
+      fetch("http://34.125.111.145:5500/pedido/" + id, requestOptions)
         .then((response) => response.text())
         .then((result) => {
           if (result != "") {
@@ -351,7 +351,7 @@ const eliminarDetalle = (id) => {
         redirect: "follow",
       };
 
-      fetch("http://localhost:5500/detallePedido/" + id, requestOptions)
+      fetch("http://34.125.111.145:5500/detallePedido/" + id, requestOptions)
         .then((response) => response.text())
         .then((result) => {
           if (result != "") {
@@ -380,7 +380,7 @@ const mostrarDetalle = (id) => {
     redirect: "follow",
   };
 
-  fetch("http://localhost:5500/detallePedido/" + id, requestOptions)
+  fetch("http://34.125.111.145:5500/detallePedido/" + id, requestOptions)
     .then((response) => response.text())
     .then((result) => {
       const info = JSON.parse(result);
@@ -440,7 +440,7 @@ const consultarPedido = () => {
     redirect: "follow",
   };
 
-  fetch("http://localhost:5500/pedido/" + pedidoDetalle, requestOptions)
+  fetch("http://34.125.111.145:5500/pedido/" + pedidoDetalle, requestOptions)
     .then((response) => response.text())
     .then((result) => {
       const info = JSON.parse(result);
@@ -472,7 +472,7 @@ const selectCategoria = (token) => {
     redirect: "follow",
   };
 
-  fetch("http://localhost:5500/articulo/categoria", requestOptions)
+  fetch("http://34.125.111.145:5500/articulo/categoria", requestOptions)
     .then((response) => response.text())
     .then((result) => {
       const info = JSON.parse(result);
@@ -497,7 +497,7 @@ const selectArticulo = (categoria) => {
     redirect: "follow",
   };
 
-  fetch("http://localhost:5500/articulo?categoria=" + categoria, requestOptions)
+  fetch("http://34.125.111.145:5500/articulo?categoria=" + categoria, requestOptions)
     .then((response) => response.text())
     .then((result) => {
       const info = JSON.parse(result);
@@ -522,7 +522,7 @@ const selectCantidadArticulo = (articulo) => {
     redirect: "follow",
   };
 
-  fetch("http://localhost:5500/articulo/" + articulo, requestOptions)
+  fetch("http://34.125.111.145:5500/articulo/" + articulo, requestOptions)
     .then((response) => response.text())
     .then((result) => {
       const info = JSON.parse(result);
@@ -558,7 +558,7 @@ const añadirDetalle = (id) => {
       redirect: "follow",
     };
 
-    fetch("http://localhost:5500/detallePedido", requestOptions)
+    fetch("http://34.125.111.145:5500/detallePedido", requestOptions)
       .then((response) => response.text())
       .then((result) => {
         const info = JSON.parse(result);
