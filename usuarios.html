@@ -52,13 +52,271 @@
         </ul>
         <div class="form-inline my-2 my-lg-0">
           <a href="index.html">
-            <button class="btn btn-danger my-2 my-sm-0">
-              Cerrar Sesión
-            </button>
+            <button class="btn btn-danger my-2 my-sm-0">Cerrar Sesión</button>
           </a>
         </div>
       </div>
     </nav>
+    <div class="container">
+      <br />
+      <h2>Usuarios</h2>
+      <br />
+      <div class="row">
+        <div class="col-6">
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Buscar"
+              id="inputBuscar"
+            />
+            <button class="btn btn-dark" type="button" id="btnBuscar">
+              Buscar
+            </button>
+          </div>
+        </div>
+        <div class="col-3"></div>
+        <div class="col">
+          <button
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+          >
+            Agregar Usuario
+          </button>
+        </div>
+      </div>
+      <br><br>
+      <div class="row" id="tbContenido"></div>
+    </div>
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">
+              Añadir Pedido
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="mb-3">
+                <label class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="inputNombre" />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <div class="mb-3">
+                  <label class="form-label">Primer Apellido</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inputPrimerApellido"
+                  />
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="mb-3">
+                  <label class="form-label">Segundo Apellido</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inputSegundoApellido"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-4">
+                <div class="mb-3">
+                  <label class="form-label">Usuario</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inputUsuario"
+                  />
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="mb-3">
+                  <label class="form-label">Contraseña</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="inputPassword"
+                  />
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="mb-3">
+                  <label class="form-label">Confirmación Contraseña</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="inputConfPassword"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="mb-3">
+                <label class="form-label">Correo</label>
+                <input type="text" class="form-control" id="inputCorreo" />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <label for="">Rol</label>
+                <select class="form-select" id="slRol">
+                  <option value="0" selected>Selecciona un Rol</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-primary" id="btnAddUsuario">
+              Generar Pedido
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="modal fade"
+      id="exampleModal2"
+      tabindex="-1"
+      aria-labelledby="exampleModal2Label"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModal2Label">
+              Editar Pedido
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="mb-3">
+                <label class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="inputNombreU" />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <div class="mb-3">
+                  <label class="form-label">Primer Apellido</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inputPrimerApellidoU"
+                  />
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="mb-3">
+                  <label class="form-label">Segundo Apellido</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inputSegundoApellidoU"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-4">
+                <div class="mb-3">
+                  <label class="form-label">Usuario</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inputUsuarioU"
+                  />
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="mb-3">
+                  <label class="form-label">Contraseña</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="inputPasswordU"
+                  />
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="mb-3">
+                  <label class="form-label">Confirmación Contraseña</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="inputConfPasswordU"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="mb-3">
+                <label class="form-label">Correo</label>
+                <input type="text" class="form-control" id="inputCorreoU" />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <label for="">Rol</label>
+                <select class="form-select" id="slRolU">
+                  <option value="0" selected>Selecciona un Rol</option>
+                </select>
+              </div>
+              <div class="col-6" hidden>
+                <label for="">Estado</label>
+                <select class="form-select" id="slEstadoU">
+                  <option value="1" selected>Activo</option>
+                  <option value="0">Inactivo</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-primary" id="btnUpdateUsuario">
+              Guardar Usuario
+            </button>
+          </div>
+        </div>
+      </div>
     <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
       integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -74,5 +332,12 @@
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"
     ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+      crossorigin="anonymous"
+    ></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="./src/usuarios.js"></script>
   </body>
 </html>
