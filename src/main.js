@@ -20,7 +20,7 @@ const login = async (user, pass) => {
   };
 
   const peticion = await fetch(
-    "http://localhost:5500/usuario/login",
+    "http://localhost:3400/usuario/login",
     requestOptions
   )
     .then((response) => response.text())

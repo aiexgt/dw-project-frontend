@@ -3,9 +3,9 @@ var usuarioId;
 
 const mostrar = (token, word) => {
   if (word != "" && word != null && word != undefined) {
-    word = "http://localhost:5500/usuario?word=" + word;
+    word = "http://localhost:3400/usuario?word=" + word;
   } else {
-    word = "http://localhost:5500/usuario";
+    word = "http://localhost:3400/usuario";
   }
   var myHeaders = new Headers();
   myHeaders.append("Authorization", "Bearer " + token);
@@ -121,7 +121,7 @@ const add = () => {
       redirect: "follow",
     };
 
-    fetch("http://localhost:5500/usuario", requestOptions)
+    fetch("http://localhost:3400/usuario", requestOptions)
       .then((response) => response.text())
       .then((result) => {
         const info = JSON.parse(result);
@@ -151,7 +151,7 @@ const selectRol = (token) => {
     redirect: "follow",
   };
 
-  fetch("http://localhost:5500/usuario/rol", requestOptions)
+  fetch("http://localhost:3400/usuario/rol", requestOptions)
     .then((response) => response.text())
     .then((result) => {
       const info = JSON.parse(result);
@@ -187,7 +187,7 @@ const eliminar = (id) => {
         redirect: "follow",
       };
 
-      fetch("http://localhost:5500/usuario/" + id, requestOptions)
+      fetch("http://localhost:3400/usuario/" + id, requestOptions)
         .then((response) => response.text())
         .then((result) => {
           if (result != "") {
@@ -217,7 +217,7 @@ const editar = (id) => {
     redirect: "follow",
   };
 
-  fetch("http://localhost:5500/usuario/"+id, requestOptions)
+  fetch("http://localhost:3400/usuario/"+id, requestOptions)
     .then((response) => response.text())
     .then((result) => {
       const info = JSON.parse(result);
@@ -273,7 +273,7 @@ const editarUsuario = () => {
         redirect: 'follow'
       };
 
-    fetch("http://localhost:5500/usuario/"+usuarioId, requestOptions)
+    fetch("http://localhost:3400/usuario/"+usuarioId, requestOptions)
       .then((response) => response.text())
       .then((result) => {
         const info = JSON.parse(result);
